@@ -1,6 +1,5 @@
-﻿namespace UnionDFA.Estructuras
+﻿namespace UnionDFAs.Estructuras
 {
-   
     public class Nodo<T>
     {
         public T Dato;
@@ -45,7 +44,6 @@
             cantidad++;
         }
 
-       
         public T Obtener(int posicion)
         {
             if (posicion < 0 || posicion >= cantidad)
@@ -59,6 +57,69 @@
                 i++;
             }
             return actual.Dato;
+        }
+
+        public bool Existe(T dato)
+        {
+            Nodo<T> actual = cabeza;
+            while (actual != null)
+            {
+                if (Comparar(actual.Dato, dato))
+                    return true;
+                actual = actual.Siguiente;
+            }
+            return false;
+        }
+
+        public int ObtenerPosicion(T dato)
+        {
+            Nodo<T> actual = cabeza;
+            int i = 0;
+            while (actual != null)
+            {
+                if (Comparar(actual.Dato, dato))
+                    return i;
+                actual = actual.Siguiente;
+                i++;
+            }
+            return -1;
+        }
+
+        public bool EliminarPorValor(T dato)
+        {
+            if (cabeza == null)
+                return false;
+
+            if (Comparar(cabeza.Dato, dato))
+            {
+                cabeza = cabeza.Siguiente;
+                cantidad--;
+                return true;
+            }
+
+            Nodo<T> anterior = cabeza;
+            Nodo<T> actual = cabeza.Siguiente;
+            while (actual != null)
+            {
+                if (Comparar(actual.Dato, dato))
+                {
+                    anterior.Siguiente = actual.Siguiente;
+                    cantidad--;
+                    return true;
+                }
+                anterior = actual;
+                actual = actual.Siguiente;
+            }
+            return false;
+        }
+
+        private bool Comparar(T a, T b)
+        {
+            if (a == null && b == null)
+                return true;
+            if (a == null || b == null)
+                return false;
+            return a.Equals(b);
         }
     }
 }

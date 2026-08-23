@@ -1,4 +1,4 @@
-﻿namespace UnionDFA.Modelo
+﻿namespace UnionDFAs.Modelo
 {
     public class Transicion
     {

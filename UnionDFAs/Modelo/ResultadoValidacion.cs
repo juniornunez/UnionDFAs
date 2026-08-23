@@ -1,6 +1,6 @@
-﻿using UnionDFA.Estructuras;
+﻿using UnionDFAs.Estructuras;
 
-namespace UnionDFA.Modelo
+namespace UnionDFAs.Modelo
 {
     public class ResultadoValidacion
     {
@@ -19,4 +19,4 @@ namespace UnionDFA.Modelo
             EsValido = false;
         }
     }
-}   
+}
