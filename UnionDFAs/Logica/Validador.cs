@@ -5,8 +5,6 @@ namespace UnionDFAs.Logica
 {
     public class Validador
     {
-        private static readonly string[] simbolosProhibidos = { "e", "epsilon", "lambda", " ", "-", "" };
-
         public ResultadoValidacion Validar(Automata automata)
         {
             ResultadoValidacion resultado = new ResultadoValidacion();
@@ -55,9 +53,9 @@ namespace UnionDFAs.Logica
             {
                 string simboloActual = automata.Alfabeto.Obtener(i);
 
-                if (EsSimboloProhibido(simboloActual))
+                if (!EsSimboloValido(simboloActual))
                 {
-                    resultado.AgregarError("El simbolo '" + simboloActual + "' no es valido en el alfabeto");
+                    resultado.AgregarError("El simbolo '" + simboloActual + "' no es valido, debe ser una sola letra o un solo numero");
                 }
 
                 for (int j = i + 1; j < automata.Alfabeto.Cantidad; j++)
@@ -71,14 +69,12 @@ namespace UnionDFAs.Logica
             }
         }
 
-        private bool EsSimboloProhibido(string simbolo)
+        private bool EsSimboloValido(string simbolo)
         {
-            for (int i = 0; i < simbolosProhibidos.Length; i++)
-            {
-                if (simbolo == simbolosProhibidos[i])
-                    return true;
-            }
-            return false;
+            if (simbolo == null || simbolo.Length != 1)
+                return false;
+            char c = simbolo[0];
+            return char.IsLetterOrDigit(c);
         }
 
         private void ValidarEstadoInicial(Automata automata, ResultadoValidacion resultado)

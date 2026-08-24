@@ -7,8 +7,6 @@ namespace UnionDFAs.Controles
         private string titulo;
         private string subtitulo;
         private Color colorAcento;
-        private Color colorFondoNormal;
-        private Color colorFondoHover;
         private bool hover;
 
         public event EventHandler? AccionClick;
@@ -18,8 +16,6 @@ namespace UnionDFAs.Controles
             this.titulo = titulo;
             this.subtitulo = subtitulo;
             this.colorAcento = colorAcento;
-            colorFondoNormal = Color.FromArgb(34, 37, 46);
-            colorFondoHover = Color.FromArgb(42, 46, 58);
             hover = false;
 
             DoubleBuffered = true;
@@ -37,9 +33,9 @@ namespace UnionDFAs.Controles
             Graphics g = e.Graphics;
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
-            Color fondo = hover ? colorFondoHover : colorFondoNormal;
+            Color fondo = hover ? Color.FromArgb(248, 248, 250) : Color.White;
             Rectangle rect = new Rectangle(0, 0, Width - 1, Height - 1);
-            int radio = 16;
+            int radio = 18;
 
             using (GraphicsPath ruta = ObtenerRutaRedondeada(rect, radio))
             {
@@ -47,7 +43,7 @@ namespace UnionDFAs.Controles
                 {
                     g.FillPath(brochaFondo, ruta);
                 }
-                using (Pen lapiz = new Pen(hover ? colorAcento : Color.FromArgb(55, 58, 68), 2))
+                using (Pen lapiz = new Pen(hover ? Color.FromArgb(150, 152, 160) : Color.FromArgb(224, 226, 230), 1.5F))
                 {
                     g.DrawPath(lapiz, ruta);
                 }
@@ -59,13 +55,13 @@ namespace UnionDFAs.Controles
             }
 
             using (Font fuenteTitulo = new Font("Segoe UI", 13F, FontStyle.Bold))
-            using (SolidBrush brochaTitulo = new SolidBrush(Color.FromArgb(235, 235, 240)))
+            using (SolidBrush brochaTitulo = new SolidBrush(Color.FromArgb(35, 37, 43)))
             {
                 g.DrawString(titulo, fuenteTitulo, brochaTitulo, new PointF(36, 20));
             }
 
             using (Font fuenteSubtitulo = new Font("Segoe UI", 9.5F))
-            using (SolidBrush brochaSubtitulo = new SolidBrush(Color.FromArgb(150, 152, 165)))
+            using (SolidBrush brochaSubtitulo = new SolidBrush(Color.FromArgb(130, 133, 145)))
             {
                 Rectangle areaTexto = new Rectangle(24, 62, Width - 48, Height - 74);
                 g.DrawString(subtitulo, fuenteSubtitulo, brochaSubtitulo, areaTexto);
