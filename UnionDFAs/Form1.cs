@@ -82,8 +82,15 @@ namespace UnionDFAs
                 Automata automata = Sesion.Automatas.Obtener(i);
                 TarjetaAutomata tarjeta = new TarjetaAutomata(automata);
                 tarjeta.SolicitudEliminar += (s, e) => EliminarAutomata(automata);
+                tarjeta.SolicitudVerDetalle += (s, e) => VerDetalleAutomata(automata);
                 panelTarjetas.Controls.Add(tarjeta);
             }
+        }
+
+        private void VerDetalleAutomata(Automata automata)
+        {
+            FormDetalleAutomata formulario = new FormDetalleAutomata(automata);
+            formulario.ShowDialog();
         }
 
         private void EliminarAutomata(Automata automata)

@@ -10,6 +10,7 @@ namespace UnionDFAs.Controles
         private Rectangle areaBotonEliminar;
 
         public event EventHandler? SolicitudEliminar;
+        public event EventHandler? SolicitudVerDetalle;
 
         public Automata Automata => automata;
 
@@ -21,7 +22,7 @@ namespace UnionDFAs.Controles
             DoubleBuffered = true;
             Size = new Size(220, 110);
             Margin = new Padding(10);
-            Cursor = Cursors.Default;
+            Cursor = Cursors.Hand;
 
             MouseEnter += (s, e) => { hover = true; Invalidate(); };
             MouseLeave += (s, e) => { hover = false; Invalidate(); };
@@ -34,6 +35,10 @@ namespace UnionDFAs.Controles
             if (areaBotonEliminar.Contains(e.Location))
             {
                 SolicitudEliminar?.Invoke(this, EventArgs.Empty);
+            }
+            else
+            {
+                SolicitudVerDetalle?.Invoke(this, EventArgs.Empty);
             }
         }
 
