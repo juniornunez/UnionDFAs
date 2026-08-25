@@ -16,9 +16,6 @@ namespace UnionDFAs.Formularios
         private ListBox lstAlfabeto;
         private ComboBox cmbEstadoInicial;
         private CheckedListBox chkFinales;
-        private ComboBox cmbOrigen;
-        private ComboBox cmbSimboloTransicion;
-        private ComboBox cmbDestino;
         private DataGridView dgvTransiciones;
         private ListBox lstErrores;
         private Label lblResultado;
@@ -35,7 +32,8 @@ namespace UnionDFAs.Formularios
             Text = "Captura de Automata";
             BackColor = Color.FromArgb(250, 250, 252);
             StartPosition = FormStartPosition.CenterScreen;
-            Size = new Size(1000, 760);
+            Size = new Size(1000, 830);
+            MaximizeBox = true;
             Font = new Font("Segoe UI", 9F);
             ForeColor = Color.FromArgb(40, 42, 48);
 
@@ -106,59 +104,67 @@ namespace UnionDFAs.Formularios
             chkFinales.BorderStyle = BorderStyle.FixedSingle;
             grupoInicialFinales.Controls.Add(chkFinales);
 
-            GroupBox grupoTransiciones = CrearGrupo("Transiciones", 30, 280, 900, 200);
+            GroupBox grupoTransiciones = CrearGrupo("Transiciones", 30, 280, 900, 260);
             Controls.Add(grupoTransiciones);
 
-            Label lblOrigen = CrearEtiqueta("Origen:", 15, 32);
-            grupoTransiciones.Controls.Add(lblOrigen);
+            BotonRedondeado btnGenerarTabla = new BotonRedondeado("Generar Tabla de Transiciones", true);
+            btnGenerarTabla.Location = new Point(15, 28);
+            btnGenerarTabla.Size = new Size(240, 38);
+            btnGenerarTabla.Click += BtnGenerarTabla_Click;
+            grupoTransiciones.Controls.Add(btnGenerarTabla);
 
-            cmbOrigen = CrearCombo(70, 28, 120);
-            grupoTransiciones.Controls.Add(cmbOrigen);
-
-            Label lblSimbolo = CrearEtiqueta("Simbolo:", 210, 32);
-            grupoTransiciones.Controls.Add(lblSimbolo);
-
-            cmbSimboloTransicion = CrearCombo(275, 28, 100);
-            grupoTransiciones.Controls.Add(cmbSimboloTransicion);
-
-            Label lblDestino = CrearEtiqueta("Destino:", 395, 32);
-            grupoTransiciones.Controls.Add(lblDestino);
-
-            cmbDestino = CrearCombo(450, 28, 120);
-            grupoTransiciones.Controls.Add(cmbDestino);
-
-            BotonRedondeado btnAgregarTransicion = new BotonRedondeado("Agregar Transicion");
-            btnAgregarTransicion.Location = new Point(590, 26);
-            btnAgregarTransicion.Size = new Size(170, 34);
-            btnAgregarTransicion.Click += BtnAgregarTransicion_Click;
-            grupoTransiciones.Controls.Add(btnAgregarTransicion);
+            Label lblAyudaTabla = new Label();
+            lblAyudaTabla.Text = "Selecciona el destino de cada fila en la columna Destino";
+            lblAyudaTabla.Location = new Point(270, 40);
+            lblAyudaTabla.AutoSize = true;
+            lblAyudaTabla.ForeColor = Color.FromArgb(130, 133, 145);
+            grupoTransiciones.Controls.Add(lblAyudaTabla);
 
             dgvTransiciones = new DataGridView();
-            dgvTransiciones.Location = new Point(15, 65);
-            dgvTransiciones.Size = new Size(865, 120);
+            dgvTransiciones.Location = new Point(15, 78);
+            dgvTransiciones.Size = new Size(865, 165);
             dgvTransiciones.BackgroundColor = Color.White;
             dgvTransiciones.BorderStyle = BorderStyle.None;
             dgvTransiciones.GridColor = Color.FromArgb(228, 230, 234);
             dgvTransiciones.EnableHeadersVisualStyles = false;
             dgvTransiciones.RowHeadersVisible = false;
-            dgvTransiciones.ReadOnly = true;
             dgvTransiciones.AllowUserToAddRows = false;
             dgvTransiciones.AllowUserToDeleteRows = false;
+            dgvTransiciones.RowTemplate.Height = 32;
             dgvTransiciones.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(246, 246, 248);
             dgvTransiciones.ColumnHeadersDefaultCellStyle.ForeColor = Color.FromArgb(60, 62, 70);
             dgvTransiciones.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            dgvTransiciones.ColumnHeadersHeight = 34;
             dgvTransiciones.DefaultCellStyle.BackColor = Color.White;
             dgvTransiciones.DefaultCellStyle.ForeColor = Color.FromArgb(40, 42, 48);
             dgvTransiciones.DefaultCellStyle.SelectionBackColor = Color.FromArgb(240, 241, 244);
             dgvTransiciones.DefaultCellStyle.SelectionForeColor = Color.FromArgb(40, 42, 48);
-            dgvTransiciones.ColumnCount = 3;
-            dgvTransiciones.Columns[0].Name = "Origen";
-            dgvTransiciones.Columns[1].Name = "Simbolo";
-            dgvTransiciones.Columns[2].Name = "Destino";
+            dgvTransiciones.DefaultCellStyle.Font = new Font("Segoe UI", 9.5F);
+            dgvTransiciones.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            DataGridViewTextBoxColumn columnaOrigen = new DataGridViewTextBoxColumn();
+            columnaOrigen.Name = "columnaOrigen";
+            columnaOrigen.HeaderText = "Origen";
+            columnaOrigen.ReadOnly = true;
+            dgvTransiciones.Columns.Add(columnaOrigen);
+
+            DataGridViewTextBoxColumn columnaSimbolo = new DataGridViewTextBoxColumn();
+            columnaSimbolo.Name = "columnaSimbolo";
+            columnaSimbolo.HeaderText = "Simbolo";
+            columnaSimbolo.ReadOnly = true;
+            dgvTransiciones.Columns.Add(columnaSimbolo);
+
+            DataGridViewComboBoxColumn columnaDestino = new DataGridViewComboBoxColumn();
+            columnaDestino.Name = "columnaDestino";
+            columnaDestino.HeaderText = "Destino";
+            columnaDestino.FlatStyle = FlatStyle.Flat;
+            columnaDestino.DisplayStyleForCurrentCellOnly = false;
+            dgvTransiciones.Columns.Add(columnaDestino);
+
             grupoTransiciones.Controls.Add(dgvTransiciones);
 
             BotonRedondeado btnValidar = new BotonRedondeado("Validar Automata", true);
-            btnValidar.Location = new Point(30, 500);
+            btnValidar.Location = new Point(30, 555);
             btnValidar.Size = new Size(190, 40);
             btnValidar.Click += BtnValidar_Click;
             Controls.Add(btnValidar);
@@ -166,21 +172,21 @@ namespace UnionDFAs.Formularios
             lblResultado = new Label();
             lblResultado.Text = "";
             lblResultado.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            lblResultado.Location = new Point(240, 510);
+            lblResultado.Location = new Point(240, 565);
             lblResultado.AutoSize = true;
             Controls.Add(lblResultado);
 
             lstErrores = new ListBox();
-            lstErrores.Location = new Point(30, 550);
-            lstErrores.Size = new Size(900, 130);
+            lstErrores.Location = new Point(30, 605);
+            lstErrores.Size = new Size(900, 90);
             lstErrores.BackColor = Color.White;
             lstErrores.BorderStyle = BorderStyle.FixedSingle;
             lstErrores.ForeColor = Color.FromArgb(190, 60, 70);
             Controls.Add(lstErrores);
 
             btnGuardar = new BotonRedondeado("Guardar Automata", true);
-            btnGuardar.Location = new Point(30, 695);
-            btnGuardar.Size = new Size(190, 40);
+            btnGuardar.Location = new Point(30, 710);
+            btnGuardar.Size = new Size(190, 45);
             btnGuardar.Enabled = false;
             btnGuardar.Click += BtnGuardar_Click;
             Controls.Add(btnGuardar);
@@ -294,60 +300,59 @@ namespace UnionDFAs.Formularios
             automataActual.Alfabeto.Agregar(simbolo);
             lstAlfabeto.Items.Add(simbolo);
             txtSimbolo.Clear();
-            ActualizarComboSimbolos();
         }
 
         private void ActualizarCombosDeEstados()
         {
             cmbEstadoInicial.Items.Clear();
-            cmbOrigen.Items.Clear();
-            cmbDestino.Items.Clear();
             chkFinales.Items.Clear();
 
             for (int i = 0; i < automataActual.Estados.Cantidad; i++)
             {
                 string estado = automataActual.Estados.Obtener(i);
                 cmbEstadoInicial.Items.Add(estado);
-                cmbOrigen.Items.Add(estado);
-                cmbDestino.Items.Add(estado);
                 chkFinales.Items.Add(estado);
             }
         }
 
-        private void ActualizarComboSimbolos()
+        private void BtnGenerarTabla_Click(object sender, EventArgs e)
         {
-            cmbSimboloTransicion.Items.Clear();
-            for (int i = 0; i < automataActual.Alfabeto.Cantidad; i++)
+            if (automataActual.Estados.Cantidad == 0)
             {
-                cmbSimboloTransicion.Items.Add(automataActual.Alfabeto.Obtener(i));
+                MessageBox.Show("Agrega al menos un estado antes de generar la tabla");
+                return;
             }
-        }
-
-        private void BtnAgregarTransicion_Click(object sender, EventArgs e)
-        {
-            if (cmbOrigen.SelectedItem == null || cmbSimboloTransicion.SelectedItem == null || cmbDestino.SelectedItem == null)
+            if (automataActual.Alfabeto.Cantidad == 0)
             {
-                MessageBox.Show("Selecciona origen, simbolo y destino para agregar la transicion");
+                MessageBox.Show("Agrega al menos un simbolo antes de generar la tabla");
                 return;
             }
 
-            string origen = cmbOrigen.SelectedItem.ToString();
-            string simbolo = cmbSimboloTransicion.SelectedItem.ToString();
-            string destino = cmbDestino.SelectedItem.ToString();
-
-            for (int i = 0; i < automataActual.Transiciones.Cantidad; i++)
+            if (dgvTransiciones.Rows.Count > 0)
             {
-                Transicion existente = automataActual.Transiciones.Obtener(i);
-                if (existente.EstadoOrigen == origen && existente.Simbolo == simbolo)
-                {
-                    MessageBox.Show("Ya existe una transicion para ese estado y simbolo");
+                DialogResult confirmacion = MessageBox.Show("Ya existe una tabla generada, si continuas se perderan los destinos ya seleccionados. Deseas continuar?", "Confirmar", MessageBoxButtons.YesNo);
+                if (confirmacion == DialogResult.No)
                     return;
-                }
             }
 
-            Transicion nueva = new Transicion(origen, simbolo, destino);
-            automataActual.Transiciones.Agregar(nueva);
-            dgvTransiciones.Rows.Add(origen, simbolo, destino);
+            dgvTransiciones.Rows.Clear();
+
+            DataGridViewComboBoxColumn columnaDestino = (DataGridViewComboBoxColumn)dgvTransiciones.Columns["columnaDestino"];
+            columnaDestino.Items.Clear();
+            for (int i = 0; i < automataActual.Estados.Cantidad; i++)
+            {
+                columnaDestino.Items.Add(automataActual.Estados.Obtener(i));
+            }
+
+            for (int i = 0; i < automataActual.Estados.Cantidad; i++)
+            {
+                string estado = automataActual.Estados.Obtener(i);
+                for (int j = 0; j < automataActual.Alfabeto.Cantidad; j++)
+                {
+                    string simbolo = automataActual.Alfabeto.Obtener(j);
+                    dgvTransiciones.Rows.Add(estado, simbolo, null);
+                }
+            }
         }
 
         private void BtnValidar_Click(object sender, EventArgs e)
@@ -370,6 +375,28 @@ namespace UnionDFAs.Formularios
                 }
             }
             automataActual.EstadosFinales = finalesSeleccionados;
+
+            automataActual.Transiciones = new ListaEnlazada<Transicion>();
+            for (int i = 0; i < dgvTransiciones.Rows.Count; i++)
+            {
+                DataGridViewRow fila = dgvTransiciones.Rows[i];
+                object valorOrigen = fila.Cells["columnaOrigen"].Value;
+                object valorSimbolo = fila.Cells["columnaSimbolo"].Value;
+                object valorDestino = fila.Cells["columnaDestino"].Value;
+
+                if (valorOrigen == null || valorSimbolo == null || valorDestino == null)
+                    continue;
+
+                string origen = valorOrigen.ToString();
+                string simbolo = valorSimbolo.ToString();
+                string destino = valorDestino.ToString();
+
+                if (destino == "")
+                    continue;
+
+                Transicion nueva = new Transicion(origen, simbolo, destino);
+                automataActual.Transiciones.Agregar(nueva);
+            }
 
             Validador validador = new Validador();
             ResultadoValidacion resultado = validador.Validar(automataActual);
