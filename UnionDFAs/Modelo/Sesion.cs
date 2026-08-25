@@ -6,6 +6,8 @@ namespace UnionDFAs.Modelo
     {
         public static ListaEnlazada<Automata> Automatas = new ListaEnlazada<Automata>();
         public static Automata AutomataUnion;
+        public static Automata AutomataOrigenUnion1;
+        public static Automata AutomataOrigenUnion2;
 
         public static string GenerarNombreDisponible()
         {

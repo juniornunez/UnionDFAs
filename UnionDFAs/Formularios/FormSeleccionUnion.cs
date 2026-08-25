@@ -1,4 +1,5 @@
 ﻿using UnionDFAs.Controles;
+using UnionDFAs.Logica;
 using UnionDFAs.Modelo;
 
 namespace UnionDFAs.Formularios
@@ -9,6 +10,9 @@ namespace UnionDFAs.Formularios
         private ComboBox cmbAutomata2;
         private ListBox lstErrores;
         private Label lblResultado;
+        private BotonRedondeado btnGenerarUnion;
+        private Automata automataSeleccionado1;
+        private Automata automataSeleccionado2;
 
         public FormSeleccionUnion()
         {
@@ -20,7 +24,7 @@ namespace UnionDFAs.Formularios
             Text = "Seleccionar Automatas para la Union";
             BackColor = Color.FromArgb(250, 250, 252);
             StartPosition = FormStartPosition.CenterScreen;
-            Size = new Size(600, 420);
+            Size = new Size(600, 470);
             Font = new Font("Segoe UI", 9F);
             ForeColor = Color.FromArgb(40, 42, 48);
 
@@ -62,11 +66,11 @@ namespace UnionDFAs.Formularios
                 cmbAutomata2.Items.Add(nombre);
             }
 
-            BotonRedondeado btnContinuar = new BotonRedondeado("Verificar y Continuar", true);
-            btnContinuar.Location = new Point(30, 170);
-            btnContinuar.Size = new Size(200, 40);
-            btnContinuar.Click += BtnContinuar_Click;
-            Controls.Add(btnContinuar);
+            BotonRedondeado btnVerificar = new BotonRedondeado("Verificar Alfabetos", true);
+            btnVerificar.Location = new Point(30, 170);
+            btnVerificar.Size = new Size(200, 40);
+            btnVerificar.Click += BtnVerificar_Click;
+            Controls.Add(btnVerificar);
 
             lblResultado = new Label();
             lblResultado.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
@@ -76,16 +80,24 @@ namespace UnionDFAs.Formularios
 
             lstErrores = new ListBox();
             lstErrores.Location = new Point(30, 255);
-            lstErrores.Size = new Size(530, 120);
+            lstErrores.Size = new Size(530, 100);
             lstErrores.BackColor = Color.White;
             lstErrores.BorderStyle = BorderStyle.FixedSingle;
             lstErrores.ForeColor = Color.FromArgb(190, 60, 70);
             Controls.Add(lstErrores);
+
+            btnGenerarUnion = new BotonRedondeado("Generar Union", true);
+            btnGenerarUnion.Location = new Point(30, 370);
+            btnGenerarUnion.Size = new Size(200, 40);
+            btnGenerarUnion.Enabled = false;
+            btnGenerarUnion.Click += BtnGenerarUnion_Click;
+            Controls.Add(btnGenerarUnion);
         }
 
-        private void BtnContinuar_Click(object sender, EventArgs e)
+        private void BtnVerificar_Click(object sender, EventArgs e)
         {
             lstErrores.Items.Clear();
+            btnGenerarUnion.Enabled = false;
 
             if (cmbAutomata1.SelectedItem == null || cmbAutomata2.SelectedItem == null)
             {
@@ -102,15 +114,16 @@ namespace UnionDFAs.Formularios
                 return;
             }
 
-            Automata automata1 = BuscarPorNombre(nombre1);
-            Automata automata2 = BuscarPorNombre(nombre2);
+            automataSeleccionado1 = BuscarPorNombre(nombre1);
+            automataSeleccionado2 = BuscarPorNombre(nombre2);
 
-            bool alfabetosCoinciden = VerificarAlfabetos(automata1, automata2, out string[] listaErrores);
+            bool alfabetosCoinciden = VerificarAlfabetos(automataSeleccionado1, automataSeleccionado2, out string[] listaErrores);
 
             if (alfabetosCoinciden)
             {
                 lblResultado.Text = "Los alfabetos coinciden, listos para la union";
                 lblResultado.ForeColor = Color.FromArgb(60, 150, 100);
+                btnGenerarUnion.Enabled = true;
             }
             else
             {
@@ -121,6 +134,19 @@ namespace UnionDFAs.Formularios
                     lstErrores.Items.Add(listaErrores[i]);
                 }
             }
+        }
+
+        private void BtnGenerarUnion_Click(object sender, EventArgs e)
+        {
+            OperadorUnion operador = new OperadorUnion();
+            Automata resultado = operador.GenerarUnion(automataSeleccionado1, automataSeleccionado2);
+
+            Sesion.AutomataUnion = resultado;
+            Sesion.AutomataOrigenUnion1 = automataSeleccionado1;
+            Sesion.AutomataOrigenUnion2 = automataSeleccionado2;
+
+            FormResultadoUnion formulario = new FormResultadoUnion(resultado);
+            formulario.ShowDialog();
         }
 
         private Automata BuscarPorNombre(string nombre)
