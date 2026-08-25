@@ -130,6 +130,7 @@ namespace UnionDFAs.Formularios
             dgvTransiciones.RowHeadersVisible = false;
             dgvTransiciones.AllowUserToAddRows = false;
             dgvTransiciones.AllowUserToDeleteRows = false;
+            dgvTransiciones.EditMode = DataGridViewEditMode.EditOnEnter;
             dgvTransiciones.RowTemplate.Height = 32;
             dgvTransiciones.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(246, 246, 248);
             dgvTransiciones.ColumnHeadersDefaultCellStyle.ForeColor = Color.FromArgb(60, 62, 70);
@@ -161,6 +162,8 @@ namespace UnionDFAs.Formularios
             columnaDestino.DisplayStyleForCurrentCellOnly = false;
             dgvTransiciones.Columns.Add(columnaDestino);
 
+            dgvTransiciones.CurrentCellDirtyStateChanged += DgvTransiciones_CurrentCellDirtyStateChanged;
+            dgvTransiciones.EditingControlShowing += DgvTransiciones_EditingControlShowing;
             grupoTransiciones.Controls.Add(dgvTransiciones);
 
             BotonRedondeado btnValidar = new BotonRedondeado("Validar Automata", true);
@@ -352,6 +355,21 @@ namespace UnionDFAs.Formularios
                     string simbolo = automataActual.Alfabeto.Obtener(j);
                     dgvTransiciones.Rows.Add(estado, simbolo, null);
                 }
+            }
+        }
+        private void DgvTransiciones_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+        {
+            if (dgvTransiciones.CurrentCell is DataGridViewComboBoxCell)
+            {
+                dgvTransiciones.CommitEdit(DataGridViewDataErrorContexts.Commit);
+            }
+        }
+
+        private void DgvTransiciones_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            if (e.Control is ComboBox combo)
+            {
+                combo.DroppedDown = true;
             }
         }
 
