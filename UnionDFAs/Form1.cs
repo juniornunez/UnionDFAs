@@ -32,10 +32,10 @@ namespace UnionDFAs
 
             Label etiquetaSubtitulo = new Label();
             etiquetaSubtitulo.Text = "Crea, valida y une automatas sobre estructuras propias";
-            etiquetaSubtitulo.Font = new Font("Segoe UI", 10.5F);
+            etiquetaSubtitulo.Font = new Font("Segoe UI", 9.5F);
             etiquetaSubtitulo.ForeColor = Color.FromArgb(130, 133, 145);
             etiquetaSubtitulo.AutoSize = true;
-            etiquetaSubtitulo.Location = new Point(42, 68);
+            etiquetaSubtitulo.Location = new Point(42, 70);
             Controls.Add(etiquetaSubtitulo);
 
             BotonRedondeado btnNuevo = new BotonRedondeado("Nuevo Automata", true);
