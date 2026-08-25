@@ -237,13 +237,9 @@ namespace UnionDFAs.Formularios
 
         private ComboBox CrearCombo(int x, int y, int ancho)
         {
-            ComboBox combo = new ComboBox();
+            ComboRedondeado combo = new ComboRedondeado();
             combo.Location = new Point(x, y);
             combo.Size = new Size(ancho, 28);
-            combo.DropDownStyle = ComboBoxStyle.DropDownList;
-            combo.BackColor = Color.White;
-            combo.ForeColor = Color.FromArgb(40, 42, 48);
-            combo.FlatStyle = FlatStyle.Flat;
             return combo;
         }
 
