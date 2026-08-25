@@ -123,7 +123,13 @@ namespace UnionDFAs
 
         private void AbrirPruebaCadenas()
         {
-            MessageBox.Show("Formulario de prueba de cadenas en construccion");
+            if (Sesion.AutomataUnion == null)
+            {
+                MessageBox.Show("Primero debes generar una union antes de probar cadenas");
+                return;
+            }
+            FormPruebaCadenas formulario = new FormPruebaCadenas();
+            formulario.ShowDialog();
         }
     }
 }
