@@ -8,12 +8,31 @@ namespace UnionDFAs.Logica
     {
         private static string CarpetaDatos()
         {
-            string carpeta = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "UnionDFAs");
+            string carpetaProyecto = BuscarCarpetaProyecto();
+            string carpeta = Path.Combine(carpetaProyecto, "Datos");
             if (!Directory.Exists(carpeta))
             {
                 Directory.CreateDirectory(carpeta);
             }
             return carpeta;
+        }
+
+        private static string BuscarCarpetaProyecto()
+        {
+            string carpetaActual = AppContext.BaseDirectory;
+            DirectoryInfo directorio = new DirectoryInfo(carpetaActual);
+
+            while (directorio != null)
+            {
+                string[] archivosProyecto = Directory.GetFiles(directorio.FullName, "*.csproj");
+                if (archivosProyecto.Length > 0)
+                {
+                    return directorio.FullName;
+                }
+                directorio = directorio.Parent;
+            }
+
+            return AppContext.BaseDirectory;
         }
 
         private static string RutaArchivo()
