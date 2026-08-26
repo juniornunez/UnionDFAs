@@ -5,9 +5,7 @@ namespace UnionDFAs.Modelo
     public static class Sesion
     {
         public static ListaEnlazada<Automata> Automatas = new ListaEnlazada<Automata>();
-        public static Automata AutomataUnion;
-        public static Automata AutomataOrigenUnion1;
-        public static Automata AutomataOrigenUnion2;
+        public static ListaEnlazada<UnionGuardada> Uniones = new ListaEnlazada<UnionGuardada>();
 
         public static string GenerarNombreDisponible()
         {
@@ -37,6 +35,16 @@ namespace UnionDFAs.Modelo
             for (int i = 0; i < Automatas.Cantidad; i++)
             {
                 if (Automatas.Obtener(i).Nombre == nombre)
+                    return true;
+            }
+            return false;
+        }
+
+        public static bool ExisteNombreUnion(string nombre)
+        {
+            for (int i = 0; i < Uniones.Cantidad; i++)
+            {
+                if (Uniones.Obtener(i).AutomataResultante.Nombre == nombre)
                     return true;
             }
             return false;

@@ -1,3 +1,5 @@
+using UnionDFAs.Logica;
+
 namespace UnionDFAs
 {
     internal static class Program
@@ -6,6 +8,7 @@ namespace UnionDFAs
         static void Main()
         {
             ApplicationConfiguration.Initialize();
+            RepositorioArchivos.Cargar();
             Application.Run(new Form1());
         }
     }

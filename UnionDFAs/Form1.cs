@@ -1,5 +1,6 @@
 using UnionDFAs.Controles;
 using UnionDFAs.Formularios;
+using UnionDFAs.Logica;
 using UnionDFAs.Modelo;
 
 namespace UnionDFAs
@@ -32,27 +33,33 @@ namespace UnionDFAs
 
             Label etiquetaSubtitulo = new Label();
             etiquetaSubtitulo.Text = "Crea, valida y une automatas sobre estructuras propias";
-            etiquetaSubtitulo.Font = new Font("Segoe UI", 9.5F);
+            etiquetaSubtitulo.Font = new Font("Segoe UI", 10.5F);
             etiquetaSubtitulo.ForeColor = Color.FromArgb(130, 133, 145);
             etiquetaSubtitulo.AutoSize = true;
-            etiquetaSubtitulo.Location = new Point(42, 70);
+            etiquetaSubtitulo.Location = new Point(42, 68);
             Controls.Add(etiquetaSubtitulo);
 
             BotonRedondeado btnNuevo = new BotonRedondeado("Nuevo Automata", true);
             btnNuevo.Location = new Point(40, 105);
-            btnNuevo.Size = new Size(180, 40);
+            btnNuevo.Size = new Size(170, 40);
             btnNuevo.Click += (s, e) => AbrirCapturaAutomata();
             Controls.Add(btnNuevo);
 
             BotonRedondeado btnUnir = new BotonRedondeado("Unir Automatas");
-            btnUnir.Location = new Point(230, 105);
-            btnUnir.Size = new Size(180, 40);
+            btnUnir.Location = new Point(220, 105);
+            btnUnir.Size = new Size(170, 40);
             btnUnir.Click += (s, e) => AbrirUnion();
             Controls.Add(btnUnir);
 
+            BotonRedondeado btnVerUniones = new BotonRedondeado("Ver Uniones");
+            btnVerUniones.Location = new Point(400, 105);
+            btnVerUniones.Size = new Size(170, 40);
+            btnVerUniones.Click += (s, e) => AbrirListaUniones();
+            Controls.Add(btnVerUniones);
+
             BotonRedondeado btnPrueba = new BotonRedondeado("Prueba de Cadenas");
-            btnPrueba.Location = new Point(420, 105);
-            btnPrueba.Size = new Size(180, 40);
+            btnPrueba.Location = new Point(580, 105);
+            btnPrueba.Size = new Size(170, 40);
             btnPrueba.Click += (s, e) => AbrirPruebaCadenas();
             Controls.Add(btnPrueba);
 
@@ -99,6 +106,7 @@ namespace UnionDFAs
             if (respuesta == DialogResult.Yes)
             {
                 Sesion.Automatas.EliminarPorValor(automata);
+                RepositorioArchivos.Guardar();
                 CargarTarjetas();
             }
         }
@@ -121,11 +129,22 @@ namespace UnionDFAs
             formulario.ShowDialog();
         }
 
+        private void AbrirListaUniones()
+        {
+            if (Sesion.Uniones.Cantidad == 0)
+            {
+                MessageBox.Show("Todavia no has generado ninguna union");
+                return;
+            }
+            FormListaUniones formulario = new FormListaUniones();
+            formulario.ShowDialog();
+        }
+
         private void AbrirPruebaCadenas()
         {
-            if (Sesion.AutomataUnion == null)
+            if (Sesion.Uniones.Cantidad == 0)
             {
-                MessageBox.Show("Primero debes generar una union antes de probar cadenas");
+                MessageBox.Show("Primero debes generar al menos una union antes de probar cadenas");
                 return;
             }
             FormPruebaCadenas formulario = new FormPruebaCadenas();

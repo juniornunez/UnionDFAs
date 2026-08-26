@@ -141,9 +141,23 @@ namespace UnionDFAs.Formularios
             OperadorUnion operador = new OperadorUnion();
             Automata resultado = operador.GenerarUnion(automataSeleccionado1, automataSeleccionado2);
 
-            Sesion.AutomataUnion = resultado;
-            Sesion.AutomataOrigenUnion1 = automataSeleccionado1;
-            Sesion.AutomataOrigenUnion2 = automataSeleccionado2;
+            string nombreBase = "Union(" + automataSeleccionado1.Nombre + ")(" + automataSeleccionado2.Nombre + ")";
+            string nombreFinal = nombreBase;
+            int contador = 1;
+            while (Sesion.ExisteNombreUnion(nombreFinal))
+            {
+                contador++;
+                nombreFinal = nombreBase + "_" + contador;
+            }
+            resultado.Nombre = nombreFinal;
+
+            UnionGuardada union = new UnionGuardada();
+            union.NombreOrigen1 = automataSeleccionado1.Nombre;
+            union.NombreOrigen2 = automataSeleccionado2.Nombre;
+            union.AutomataResultante = resultado;
+
+            Sesion.Uniones.Agregar(union);
+            RepositorioArchivos.Guardar();
 
             FormResultadoUnion formulario = new FormResultadoUnion(resultado);
             formulario.ShowDialog();

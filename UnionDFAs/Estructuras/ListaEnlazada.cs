@@ -121,5 +121,31 @@
                 return false;
             return a.Equals(b);
         }
+        public T[] AArreglo()
+        {
+            T[] arreglo = new T[cantidad];
+            Nodo<T> actual = cabeza;
+            int i = 0;
+            while (actual != null)
+            {
+                arreglo[i] = actual.Dato;
+                actual = actual.Siguiente;
+                i++;
+            }
+            return arreglo;
+        }
+
+        public static ListaEnlazada<T> DesdeArreglo(T[] arreglo)
+        {
+            ListaEnlazada<T> lista = new ListaEnlazada<T>();
+            if (arreglo != null)
+            {
+                for (int i = 0; i < arreglo.Length; i++)
+                {
+                    lista.Agregar(arreglo[i]);
+                }
+            }
+            return lista;
+        }
     }
 }

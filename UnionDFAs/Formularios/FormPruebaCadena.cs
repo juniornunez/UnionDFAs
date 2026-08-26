@@ -7,13 +7,16 @@ namespace UnionDFAs.Formularios
 {
     public class FormPruebaCadenas : Form
     {
+        private ComboBox cmbUnion;
         private TextBox txtCadena;
-        private Label lblTrazabilidad;
         private FlowLayoutPanel panelTrazabilidad;
         private Label lblVeredicto1;
         private Label lblVeredicto2;
         private Label lblVeredictoUnion;
         private Label lblMensajeError;
+        private GroupBox grupoVeredicto1;
+        private GroupBox grupoVeredicto2;
+        private UnionGuardada unionSeleccionada;
 
         public FormPruebaCadenas()
         {
@@ -25,39 +28,48 @@ namespace UnionDFAs.Formularios
             Text = "Prueba de Cadenas";
             BackColor = Color.FromArgb(250, 250, 252);
             StartPosition = FormStartPosition.CenterScreen;
-            Size = new Size(950, 650);
+            Size = new Size(950, 680);
             Font = new Font("Segoe UI", 9F);
             ForeColor = Color.FromArgb(40, 42, 48);
 
             Label titulo = new Label();
-            titulo.Text = "Prueba de Cadenas sobre el Automata Union";
+            titulo.Text = "Prueba de Cadenas";
             titulo.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
             titulo.AutoSize = true;
             titulo.Location = new Point(30, 15);
             Controls.Add(titulo);
 
-            Label subtitulo = new Label();
-            subtitulo.Text = "Union evaluada: " + Sesion.AutomataOrigenUnion1.Nombre + " y " + Sesion.AutomataOrigenUnion2.Nombre;
-            subtitulo.Font = new Font("Segoe UI", 10F);
-            subtitulo.ForeColor = Color.FromArgb(130, 133, 145);
-            subtitulo.AutoSize = true;
-            subtitulo.Location = new Point(30, 55);
-            Controls.Add(subtitulo);
+            Label lblUnion = new Label();
+            lblUnion.Text = "Union a evaluar:";
+            lblUnion.Location = new Point(30, 60);
+            lblUnion.AutoSize = true;
+            Controls.Add(lblUnion);
+
+            cmbUnion = new ComboRedondeado();
+            cmbUnion.Location = new Point(150, 56);
+            cmbUnion.Size = new Size(350, 28);
+            cmbUnion.SelectedIndexChanged += CmbUnion_SelectedIndexChanged;
+            Controls.Add(cmbUnion);
+
+            for (int i = 0; i < Sesion.Uniones.Cantidad; i++)
+            {
+                cmbUnion.Items.Add(Sesion.Uniones.Obtener(i).AutomataResultante.Nombre);
+            }
 
             Label lblEntrada = new Label();
             lblEntrada.Text = "Cadena a evaluar:";
-            lblEntrada.Location = new Point(30, 100);
+            lblEntrada.Location = new Point(30, 105);
             lblEntrada.AutoSize = true;
             Controls.Add(lblEntrada);
 
             txtCadena = new TextBox();
-            txtCadena.Location = new Point(180, 96);
+            txtCadena.Location = new Point(180, 101);
             txtCadena.Size = new Size(300, 28);
             txtCadena.BorderStyle = BorderStyle.FixedSingle;
             Controls.Add(txtCadena);
 
             BotonRedondeado btnEvaluar = new BotonRedondeado("Evaluar Cadena", true);
-            btnEvaluar.Location = new Point(500, 92);
+            btnEvaluar.Location = new Point(500, 97);
             btnEvaluar.Size = new Size(170, 38);
             btnEvaluar.Click += BtnEvaluar_Click;
             Controls.Add(btnEvaluar);
@@ -66,19 +78,19 @@ namespace UnionDFAs.Formularios
             lblMensajeError.Text = "";
             lblMensajeError.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
             lblMensajeError.ForeColor = Color.FromArgb(190, 60, 70);
-            lblMensajeError.Location = new Point(30, 140);
+            lblMensajeError.Location = new Point(30, 145);
             lblMensajeError.AutoSize = true;
             Controls.Add(lblMensajeError);
 
-            lblTrazabilidad = new Label();
+            Label lblTrazabilidad = new Label();
             lblTrazabilidad.Text = "Trazabilidad en el Automata Union";
             lblTrazabilidad.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             lblTrazabilidad.AutoSize = true;
-            lblTrazabilidad.Location = new Point(30, 180);
+            lblTrazabilidad.Location = new Point(30, 185);
             Controls.Add(lblTrazabilidad);
 
             GroupBox grupoTraza = new GroupBox();
-            grupoTraza.Location = new Point(30, 215);
+            grupoTraza.Location = new Point(30, 220);
             grupoTraza.Size = new Size(870, 130);
             grupoTraza.ForeColor = Color.FromArgb(90, 92, 100);
             Controls.Add(grupoTraza);
@@ -94,17 +106,22 @@ namespace UnionDFAs.Formularios
             etiquetaVeredicto.Text = "Veredicto de Aceptacion";
             etiquetaVeredicto.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             etiquetaVeredicto.AutoSize = true;
-            etiquetaVeredicto.Location = new Point(30, 365);
+            etiquetaVeredicto.Location = new Point(30, 370);
             Controls.Add(etiquetaVeredicto);
 
-            GroupBox grupoVeredicto1 = CrearTarjetaVeredicto(Sesion.AutomataOrigenUnion1.Nombre, 30, 405, out lblVeredicto1);
+            grupoVeredicto1 = CrearTarjetaVeredicto("Automata 1", 30, 410, out lblVeredicto1);
             Controls.Add(grupoVeredicto1);
 
-            GroupBox grupoVeredicto2 = CrearTarjetaVeredicto(Sesion.AutomataOrigenUnion2.Nombre, 320, 405, out lblVeredicto2);
+            grupoVeredicto2 = CrearTarjetaVeredicto("Automata 2", 320, 410, out lblVeredicto2);
             Controls.Add(grupoVeredicto2);
 
-            GroupBox grupoVeredictoUnion = CrearTarjetaVeredicto("Automata Union", 610, 405, out lblVeredictoUnion);
+            GroupBox grupoVeredictoUnion = CrearTarjetaVeredicto("Automata Union", 610, 410, out lblVeredictoUnion);
             Controls.Add(grupoVeredictoUnion);
+
+            if (cmbUnion.Items.Count > 0)
+            {
+                cmbUnion.SelectedIndex = 0;
+            }
         }
 
         private GroupBox CrearTarjetaVeredicto(string titulo, int x, int y, out Label etiquetaResultado)
@@ -128,15 +145,60 @@ namespace UnionDFAs.Formularios
             return grupo;
         }
 
+        private void CmbUnion_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbUnion.SelectedIndex < 0)
+                return;
+
+            unionSeleccionada = Sesion.Uniones.Obtener(cmbUnion.SelectedIndex);
+            grupoVeredicto1.Text = unionSeleccionada.NombreOrigen1;
+            grupoVeredicto2.Text = unionSeleccionada.NombreOrigen2;
+
+            lblVeredicto1.Text = "Sin evaluar";
+            lblVeredicto1.ForeColor = Color.FromArgb(130, 133, 145);
+            lblVeredicto2.Text = "Sin evaluar";
+            lblVeredicto2.ForeColor = Color.FromArgb(130, 133, 145);
+            lblVeredictoUnion.Text = "Sin evaluar";
+            lblVeredictoUnion.ForeColor = Color.FromArgb(130, 133, 145);
+            panelTrazabilidad.Controls.Clear();
+            lblMensajeError.Text = "";
+        }
+
+        private Automata BuscarAutomataPorNombre(string nombre)
+        {
+            for (int i = 0; i < Sesion.Automatas.Cantidad; i++)
+            {
+                Automata automata = Sesion.Automatas.Obtener(i);
+                if (automata.Nombre == nombre)
+                    return automata;
+            }
+            return null;
+        }
+
         private void BtnEvaluar_Click(object sender, EventArgs e)
         {
+            if (unionSeleccionada == null)
+            {
+                MessageBox.Show("Selecciona una union para evaluar");
+                return;
+            }
+
+            Automata automataOrigen1 = BuscarAutomataPorNombre(unionSeleccionada.NombreOrigen1);
+            Automata automataOrigen2 = BuscarAutomataPorNombre(unionSeleccionada.NombreOrigen2);
+
+            if (automataOrigen1 == null || automataOrigen2 == null)
+            {
+                MessageBox.Show("No se encontraron los automatas originales de esta union");
+                return;
+            }
+
             string cadena = txtCadena.Text.Trim();
             lblMensajeError.Text = "";
             panelTrazabilidad.Controls.Clear();
 
             EvaluadorCadenas evaluador = new EvaluadorCadenas();
 
-            ResultadoEvaluacion resultadoUnion = evaluador.Evaluar(Sesion.AutomataUnion, cadena);
+            ResultadoEvaluacion resultadoUnion = evaluador.Evaluar(unionSeleccionada.AutomataResultante, cadena);
 
             if (!resultadoUnion.CadenaValida)
             {
@@ -152,8 +214,8 @@ namespace UnionDFAs.Formularios
 
             MostrarTrazabilidad(resultadoUnion.SecuenciaEstados, cadena);
 
-            ResultadoEvaluacion resultado1 = evaluador.Evaluar(Sesion.AutomataOrigenUnion1, cadena);
-            ResultadoEvaluacion resultado2 = evaluador.Evaluar(Sesion.AutomataOrigenUnion2, cadena);
+            ResultadoEvaluacion resultado1 = evaluador.Evaluar(automataOrigen1, cadena);
+            ResultadoEvaluacion resultado2 = evaluador.Evaluar(automataOrigen2, cadena);
 
             AplicarVeredicto(lblVeredicto1, resultado1);
             AplicarVeredicto(lblVeredicto2, resultado2);

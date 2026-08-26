@@ -449,6 +449,7 @@ namespace UnionDFAs.Formularios
             }
 
             Sesion.Automatas.Agregar(automataActual);
+            RepositorioArchivos.Guardar();
             MessageBox.Show("Automata '" + automataActual.Nombre + "' guardado correctamente");
             Close();
         }
