@@ -10,6 +10,7 @@ namespace UnionDFAs.Formularios
         private ComboBox cmbUnion;
         private TextBox txtCadena;
         private FlowLayoutPanel panelTrazabilidad;
+        private TextBox txtNotacionFormal;
         private Label lblVeredicto1;
         private Label lblVeredicto2;
         private Label lblVeredictoUnion;
@@ -28,7 +29,7 @@ namespace UnionDFAs.Formularios
             Text = "Prueba de Cadenas";
             BackColor = Color.FromArgb(250, 250, 252);
             StartPosition = FormStartPosition.CenterScreen;
-            Size = new Size(950, 680);
+            Size = new Size(950, 950);
             Font = new Font("Segoe UI", 9F);
             ForeColor = Color.FromArgb(40, 42, 48);
 
@@ -102,20 +103,39 @@ namespace UnionDFAs.Formularios
             panelTrazabilidad.BackColor = Color.White;
             grupoTraza.Controls.Add(panelTrazabilidad);
 
+            Label lblNotacionFormal = new Label();
+            lblNotacionFormal.Text = "Notacion Formal (Delta Gorrito)";
+            lblNotacionFormal.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblNotacionFormal.AutoSize = true;
+            lblNotacionFormal.Location = new Point(30, 365);
+            Controls.Add(lblNotacionFormal);
+
+            txtNotacionFormal = new TextBox();
+            txtNotacionFormal.Location = new Point(30, 400);
+            txtNotacionFormal.Size = new Size(870, 270);
+            txtNotacionFormal.Multiline = true;
+            txtNotacionFormal.ReadOnly = true;
+            txtNotacionFormal.ScrollBars = ScrollBars.Vertical;
+            txtNotacionFormal.Font = new Font("Consolas", 10F);
+            txtNotacionFormal.BackColor = Color.White;
+            txtNotacionFormal.BorderStyle = BorderStyle.FixedSingle;
+            txtNotacionFormal.ForeColor = Color.FromArgb(40, 42, 48);
+            Controls.Add(txtNotacionFormal);
+
             Label etiquetaVeredicto = new Label();
             etiquetaVeredicto.Text = "Veredicto de Aceptacion";
             etiquetaVeredicto.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             etiquetaVeredicto.AutoSize = true;
-            etiquetaVeredicto.Location = new Point(30, 370);
+            etiquetaVeredicto.Location = new Point(30, 685);
             Controls.Add(etiquetaVeredicto);
 
-            grupoVeredicto1 = CrearTarjetaVeredicto("Automata 1", 30, 410, out lblVeredicto1);
+            grupoVeredicto1 = CrearTarjetaVeredicto("Automata 1", 30, 725, out lblVeredicto1);
             Controls.Add(grupoVeredicto1);
 
-            grupoVeredicto2 = CrearTarjetaVeredicto("Automata 2", 320, 410, out lblVeredicto2);
+            grupoVeredicto2 = CrearTarjetaVeredicto("Automata 2", 320, 725, out lblVeredicto2);
             Controls.Add(grupoVeredicto2);
 
-            GroupBox grupoVeredictoUnion = CrearTarjetaVeredicto("Automata Union", 610, 410, out lblVeredictoUnion);
+            GroupBox grupoVeredictoUnion = CrearTarjetaVeredicto("Automata Union", 610, 725, out lblVeredictoUnion);
             Controls.Add(grupoVeredictoUnion);
 
             if (cmbUnion.Items.Count > 0)
@@ -161,6 +181,7 @@ namespace UnionDFAs.Formularios
             lblVeredictoUnion.Text = "Sin evaluar";
             lblVeredictoUnion.ForeColor = Color.FromArgb(130, 133, 145);
             panelTrazabilidad.Controls.Clear();
+            txtNotacionFormal.Text = "";
             lblMensajeError.Text = "";
         }
 
@@ -195,6 +216,7 @@ namespace UnionDFAs.Formularios
             string cadena = txtCadena.Text.Trim();
             lblMensajeError.Text = "";
             panelTrazabilidad.Controls.Clear();
+            txtNotacionFormal.Text = "";
 
             EvaluadorCadenas evaluador = new EvaluadorCadenas();
 
@@ -213,6 +235,8 @@ namespace UnionDFAs.Formularios
             }
 
             MostrarTrazabilidad(resultadoUnion.SecuenciaEstados, cadena);
+
+            txtNotacionFormal.Text = GeneradorNotacionFormal.Generar(unionSeleccionada.AutomataResultante.EstadoInicial, cadena, resultadoUnion.SecuenciaEstados);
 
             ResultadoEvaluacion resultado1 = evaluador.Evaluar(automataOrigen1, cadena);
             ResultadoEvaluacion resultado2 = evaluador.Evaluar(automataOrigen2, cadena);
