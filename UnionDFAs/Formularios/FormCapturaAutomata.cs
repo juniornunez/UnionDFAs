@@ -20,6 +20,7 @@ namespace UnionDFAs.Formularios
         private ListBox lstErrores;
         private Label lblResultado;
         private BotonRedondeado btnGuardar;
+        private GrafoAutomata grafoAutomata;
 
         public FormCapturaAutomata()
         {
@@ -32,7 +33,7 @@ namespace UnionDFAs.Formularios
             Text = "Captura de Automata";
             BackColor = Color.FromArgb(250, 250, 252);
             StartPosition = FormStartPosition.CenterScreen;
-            Size = new Size(1000, 830);
+            Size = new Size(1450, 830);
             MaximizeBox = true;
             Font = new Font("Segoe UI", 9F);
             ForeColor = Color.FromArgb(40, 42, 48);
@@ -91,6 +92,7 @@ namespace UnionDFAs.Formularios
             grupoInicialFinales.Controls.Add(lblInicial);
 
             cmbEstadoInicial = CrearCombo(120, 25, 150);
+            cmbEstadoInicial.SelectedIndexChanged += (s, e) => ActualizarGrafico();
             grupoInicialFinales.Controls.Add(cmbEstadoInicial);
 
             Label lblFinales = CrearEtiqueta("Estados finales:", 15, 60);
@@ -102,6 +104,7 @@ namespace UnionDFAs.Formularios
             chkFinales.BackColor = Color.White;
             chkFinales.ForeColor = Color.FromArgb(40, 42, 48);
             chkFinales.BorderStyle = BorderStyle.FixedSingle;
+            chkFinales.ItemCheck += (s, e) => BeginInvoke(new Action(ActualizarGrafico));
             grupoInicialFinales.Controls.Add(chkFinales);
 
             GroupBox grupoTransiciones = CrearGrupo("Transiciones", 30, 280, 900, 260);
@@ -164,7 +167,18 @@ namespace UnionDFAs.Formularios
 
             dgvTransiciones.CurrentCellDirtyStateChanged += DgvTransiciones_CurrentCellDirtyStateChanged;
             dgvTransiciones.EditingControlShowing += DgvTransiciones_EditingControlShowing;
+            dgvTransiciones.CellValueChanged += (s, e) => ActualizarGrafico();
+
             grupoTransiciones.Controls.Add(dgvTransiciones);
+
+            GroupBox grupoGrafo = CrearGrupo("Vista del Automata (Grafo)", 960, 100, 460, 655);
+            Controls.Add(grupoGrafo);
+
+            grafoAutomata = new GrafoAutomata();
+            grafoAutomata.Location = new Point(15, 25);
+            grafoAutomata.Size = new Size(430, 615);
+            grafoAutomata.BorderStyle = BorderStyle.FixedSingle;
+            grupoGrafo.Controls.Add(grafoAutomata);
 
             BotonRedondeado btnValidar = new BotonRedondeado("Validar Automata", true);
             btnValidar.Location = new Point(30, 555);
@@ -193,6 +207,8 @@ namespace UnionDFAs.Formularios
             btnGuardar.Enabled = false;
             btnGuardar.Click += BtnGuardar_Click;
             Controls.Add(btnGuardar);
+
+            ActualizarGrafico();
         }
 
         private void TxtSimbolo_KeyPress(object sender, KeyPressEventArgs e)
@@ -280,6 +296,7 @@ namespace UnionDFAs.Formularios
             lstEstados.Items.Add(estado);
             txtEstado.Clear();
             ActualizarCombosDeEstados();
+            ActualizarGrafico();
         }
 
         private void BtnAgregarSimbolo_Click(object sender, EventArgs e)
@@ -303,6 +320,7 @@ namespace UnionDFAs.Formularios
             automataActual.Alfabeto.Agregar(simbolo);
             lstAlfabeto.Items.Add(simbolo);
             txtSimbolo.Clear();
+            ActualizarGrafico();
         }
 
         private void ActualizarCombosDeEstados()
@@ -356,7 +374,10 @@ namespace UnionDFAs.Formularios
                     dgvTransiciones.Rows.Add(estado, simbolo, null);
                 }
             }
+
+            ActualizarGrafico();
         }
+
         private void DgvTransiciones_CurrentCellDirtyStateChanged(object sender, EventArgs e)
         {
             if (dgvTransiciones.CurrentCell is DataGridViewComboBoxCell)
@@ -371,6 +392,49 @@ namespace UnionDFAs.Formularios
             {
                 combo.DroppedDown = true;
             }
+        }
+
+        private ListaEnlazada<Transicion> ConstruirTransicionesDesdeTabla()
+        {
+            ListaEnlazada<Transicion> transiciones = new ListaEnlazada<Transicion>();
+            for (int i = 0; i < dgvTransiciones.Rows.Count; i++)
+            {
+                DataGridViewRow fila = dgvTransiciones.Rows[i];
+                object valorOrigen = fila.Cells["columnaOrigen"].Value;
+                object valorSimbolo = fila.Cells["columnaSimbolo"].Value;
+                object valorDestino = fila.Cells["columnaDestino"].Value;
+
+                if (valorOrigen == null || valorSimbolo == null || valorDestino == null)
+                    continue;
+
+                string destino = valorDestino.ToString();
+                if (destino == "")
+                    continue;
+
+                transiciones.Agregar(new Transicion(valorOrigen.ToString(), valorSimbolo.ToString(), destino));
+            }
+            return transiciones;
+        }
+
+        private void ActualizarGrafico()
+        {
+            Automata snapshot = new Automata(txtNombre.Text);
+            snapshot.Estados = automataActual.Estados;
+            snapshot.Alfabeto = automataActual.Alfabeto;
+            snapshot.Transiciones = ConstruirTransicionesDesdeTabla();
+            snapshot.EstadoInicial = cmbEstadoInicial.SelectedItem != null ? cmbEstadoInicial.SelectedItem.ToString() : null;
+
+            ListaEnlazada<string> finales = new ListaEnlazada<string>();
+            for (int i = 0; i < chkFinales.Items.Count; i++)
+            {
+                if (chkFinales.GetItemChecked(i))
+                {
+                    finales.Agregar(chkFinales.Items[i].ToString());
+                }
+            }
+            snapshot.EstadosFinales = finales;
+
+            grafoAutomata.Automata = snapshot;
         }
 
         private void BtnValidar_Click(object sender, EventArgs e)
@@ -393,28 +457,7 @@ namespace UnionDFAs.Formularios
                 }
             }
             automataActual.EstadosFinales = finalesSeleccionados;
-
-            automataActual.Transiciones = new ListaEnlazada<Transicion>();
-            for (int i = 0; i < dgvTransiciones.Rows.Count; i++)
-            {
-                DataGridViewRow fila = dgvTransiciones.Rows[i];
-                object valorOrigen = fila.Cells["columnaOrigen"].Value;
-                object valorSimbolo = fila.Cells["columnaSimbolo"].Value;
-                object valorDestino = fila.Cells["columnaDestino"].Value;
-
-                if (valorOrigen == null || valorSimbolo == null || valorDestino == null)
-                    continue;
-
-                string origen = valorOrigen.ToString();
-                string simbolo = valorSimbolo.ToString();
-                string destino = valorDestino.ToString();
-
-                if (destino == "")
-                    continue;
-
-                Transicion nueva = new Transicion(origen, simbolo, destino);
-                automataActual.Transiciones.Agregar(nueva);
-            }
+            automataActual.Transiciones = ConstruirTransicionesDesdeTabla();
 
             Validador validador = new Validador();
             ResultadoValidacion resultado = validador.Validar(automataActual);
@@ -438,6 +481,8 @@ namespace UnionDFAs.Formularios
                     lstErrores.Items.Add(resultado.Errores.Obtener(i));
                 }
             }
+
+            ActualizarGrafico();
         }
 
         private void BtnGuardar_Click(object sender, EventArgs e)

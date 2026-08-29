@@ -1,4 +1,5 @@
-﻿using UnionDFAs.Estructuras;
+﻿using UnionDFAs.Controles;
+using UnionDFAs.Estructuras;
 using UnionDFAs.Modelo;
 
 namespace UnionDFAs.Formularios
@@ -18,7 +19,7 @@ namespace UnionDFAs.Formularios
             Text = "Detalle del Automata: " + automata.Nombre;
             BackColor = Color.FromArgb(250, 250, 252);
             StartPosition = FormStartPosition.CenterScreen;
-            Size = new Size(950, 700);
+            Size = new Size(950, 1050);
             Font = new Font("Segoe UI", 9F);
             ForeColor = Color.FromArgb(40, 42, 48);
 
@@ -58,15 +59,35 @@ namespace UnionDFAs.Formularios
             lblFinales.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             grupoComponentes.Controls.Add(lblFinales);
 
+            Label etiquetaGrafo = new Label();
+            etiquetaGrafo.Text = "Vista del Automata (Grafo)";
+            etiquetaGrafo.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            etiquetaGrafo.AutoSize = true;
+            etiquetaGrafo.Location = new Point(30, 210);
+            Controls.Add(etiquetaGrafo);
+
+            GroupBox grupoGrafo = new GroupBox();
+            grupoGrafo.Location = new Point(30, 245);
+            grupoGrafo.Size = new Size(870, 320);
+            grupoGrafo.ForeColor = Color.FromArgb(90, 92, 100);
+            Controls.Add(grupoGrafo);
+
+            GrafoAutomata grafoAutomata = new GrafoAutomata();
+            grafoAutomata.Location = new Point(10, 20);
+            grafoAutomata.Size = new Size(850, 290);
+            grafoAutomata.BorderStyle = BorderStyle.FixedSingle;
+            grafoAutomata.Automata = automata;
+            grupoGrafo.Controls.Add(grafoAutomata);
+
             Label etiquetaTabla = new Label();
             etiquetaTabla.Text = "Tabla de Transiciones";
             etiquetaTabla.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             etiquetaTabla.AutoSize = true;
-            etiquetaTabla.Location = new Point(30, 210);
+            etiquetaTabla.Location = new Point(30, 580);
             Controls.Add(etiquetaTabla);
 
             DataGridView tabla = new DataGridView();
-            tabla.Location = new Point(30, 245);
+            tabla.Location = new Point(30, 615);
             tabla.Size = new Size(870, 380);
             tabla.BackgroundColor = Color.White;
             tabla.BorderStyle = BorderStyle.None;
