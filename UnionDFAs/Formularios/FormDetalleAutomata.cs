@@ -72,12 +72,20 @@ namespace UnionDFAs.Formularios
             grupoGrafo.ForeColor = Color.FromArgb(90, 92, 100);
             Controls.Add(grupoGrafo);
 
+            Panel contenedorScroll = new Panel();
+            contenedorScroll.Location = new Point(10, 20);
+            contenedorScroll.Size = new Size(850, 290);
+            contenedorScroll.BorderStyle = BorderStyle.FixedSingle;
+            contenedorScroll.AutoScroll = true;
+            contenedorScroll.BackColor = Color.White;
+            grupoGrafo.Controls.Add(contenedorScroll);
+
             GrafoAutomata grafoAutomata = new GrafoAutomata();
-            grafoAutomata.Location = new Point(10, 20);
-            grafoAutomata.Size = new Size(850, 290);
-            grafoAutomata.BorderStyle = BorderStyle.FixedSingle;
             grafoAutomata.Automata = automata;
-            grupoGrafo.Controls.Add(grafoAutomata);
+            Size tamanoNecesario = grafoAutomata.CalcularTamanoNecesario();
+            grafoAutomata.Size = new Size(Math.Max(tamanoNecesario.Width, contenedorScroll.Width - 20), Math.Max(tamanoNecesario.Height, contenedorScroll.Height - 20));
+            grafoAutomata.Location = new Point(0, 0);
+            contenedorScroll.Controls.Add(grafoAutomata);
 
             Label etiquetaTabla = new Label();
             etiquetaTabla.Text = "Tabla de Transiciones";

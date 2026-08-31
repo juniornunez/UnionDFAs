@@ -61,6 +61,21 @@ namespace UnionDFAs.Controles
             }
         }
 
+        private const int RadioMinimoBase = 90;
+        private const int RadioPorEstadoExtra = 22;
+
+        public Size CalcularTamanoNecesario()
+        {
+            if (automata == null || automata.Estados.Cantidad <= 1)
+                return new Size(400, 300);
+
+            int n = automata.Estados.Cantidad;
+            int radio = RadioMinimoBase + n * RadioPorEstadoExtra;
+            int margen = 100;
+            int lado = radio * 2 + margen;
+            return new Size(lado, lado);
+        }
+
         private void CalcularCajas(Graphics g)
         {
             int n = automata.Estados.Cantidad;
@@ -70,9 +85,6 @@ namespace UnionDFAs.Controles
             {
                 int cx = Width / 2;
                 int cy = Height / 2;
-                int radio = Math.Min(Width, Height) / 2 - 60;
-                if (radio < 70)
-                    radio = 70;
 
                 if (n == 1)
                 {
@@ -82,6 +94,8 @@ namespace UnionDFAs.Controles
                     cajas[0] = new Rectangle(cx - anchoCaja / 2, cy - AltoCaja / 2, anchoCaja, AltoCaja);
                     return;
                 }
+
+                int radio = RadioMinimoBase + n * RadioPorEstadoExtra;
 
                 for (int i = 0; i < n; i++)
                 {

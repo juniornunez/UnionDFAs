@@ -18,7 +18,7 @@ namespace UnionDFAs.Formularios
             Text = "Resultado de la Union: " + automataUnion.Nombre;
             BackColor = Color.FromArgb(250, 250, 252);
             StartPosition = FormStartPosition.CenterScreen;
-            Size = new Size(1000, 700);
+            Size = new Size(1000, 1050);
             Font = new Font("Segoe UI", 9F);
             ForeColor = Color.FromArgb(40, 42, 48);
 
@@ -54,16 +54,44 @@ namespace UnionDFAs.Formularios
             Label lblFinales = CrearEtiquetaInfo(textoFinales, 15, 88);
             grupoComponentes.Controls.Add(lblFinales);
 
+            Label etiquetaGrafo = new Label();
+            etiquetaGrafo.Text = "Vista del Automata Union (Grafo)";
+            etiquetaGrafo.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            etiquetaGrafo.AutoSize = true;
+            etiquetaGrafo.Location = new Point(30, 185);
+            Controls.Add(etiquetaGrafo);
+
+            GroupBox grupoGrafo = new GroupBox();
+            grupoGrafo.Location = new Point(30, 220);
+            grupoGrafo.Size = new Size(900, 350);
+            grupoGrafo.ForeColor = Color.FromArgb(90, 92, 100);
+            Controls.Add(grupoGrafo);
+
+            Panel contenedorScroll = new Panel();
+            contenedorScroll.Location = new Point(10, 20);
+            contenedorScroll.Size = new Size(880, 320);
+            contenedorScroll.BorderStyle = BorderStyle.FixedSingle;
+            contenedorScroll.AutoScroll = true;
+            contenedorScroll.BackColor = Color.White;
+            grupoGrafo.Controls.Add(contenedorScroll);
+
+            GrafoAutomata grafoAutomata = new GrafoAutomata();
+            grafoAutomata.Automata = automataUnion;
+            Size tamanoNecesario = grafoAutomata.CalcularTamanoNecesario();
+            grafoAutomata.Size = new Size(Math.Max(tamanoNecesario.Width, contenedorScroll.Width - 20), Math.Max(tamanoNecesario.Height, contenedorScroll.Height - 20));
+            grafoAutomata.Location = new Point(0, 0);
+            contenedorScroll.Controls.Add(grafoAutomata);
+
             Label etiquetaTabla = new Label();
             etiquetaTabla.Text = "Tabla de Transiciones";
             etiquetaTabla.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             etiquetaTabla.AutoSize = true;
-            etiquetaTabla.Location = new Point(30, 185);
+            etiquetaTabla.Location = new Point(30, 590);
             Controls.Add(etiquetaTabla);
 
             DataGridView tabla = new DataGridView();
-            tabla.Location = new Point(30, 220);
-            tabla.Size = new Size(900, 360);
+            tabla.Location = new Point(30, 625);
+            tabla.Size = new Size(900, 380);
             tabla.BackgroundColor = Color.White;
             tabla.BorderStyle = BorderStyle.None;
             tabla.GridColor = Color.FromArgb(228, 230, 234);
@@ -75,8 +103,6 @@ namespace UnionDFAs.Formularios
             tabla.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(246, 246, 248);
             tabla.ColumnHeadersDefaultCellStyle.ForeColor = Color.FromArgb(60, 62, 70);
             tabla.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            tabla.DefaultCellStyle.BackColor = Color.White;
-            tabla.DefaultCellStyle.ForeColor = Color.FromArgb(40, 42, 48);
             tabla.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
             tabla.Columns.Add("estado", "Estado");

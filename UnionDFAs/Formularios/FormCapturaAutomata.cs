@@ -174,11 +174,18 @@ namespace UnionDFAs.Formularios
             GroupBox grupoGrafo = CrearGrupo("Vista del Automata (Grafo)", 960, 100, 460, 655);
             Controls.Add(grupoGrafo);
 
+            Panel contenedorScrollGrafo = new Panel();
+            contenedorScrollGrafo.Location = new Point(15, 25);
+            contenedorScrollGrafo.Size = new Size(430, 615);
+            contenedorScrollGrafo.BorderStyle = BorderStyle.FixedSingle;
+            contenedorScrollGrafo.AutoScroll = true;
+            contenedorScrollGrafo.BackColor = Color.White;
+            grupoGrafo.Controls.Add(contenedorScrollGrafo);
+
             grafoAutomata = new GrafoAutomata();
-            grafoAutomata.Location = new Point(15, 25);
-            grafoAutomata.Size = new Size(430, 615);
-            grafoAutomata.BorderStyle = BorderStyle.FixedSingle;
-            grupoGrafo.Controls.Add(grafoAutomata);
+            grafoAutomata.Size = new Size(410, 595);
+            grafoAutomata.Location = new Point(0, 0);
+            contenedorScrollGrafo.Controls.Add(grafoAutomata);
 
             BotonRedondeado btnValidar = new BotonRedondeado("Validar Automata", true);
             btnValidar.Location = new Point(30, 555);
@@ -435,6 +442,10 @@ namespace UnionDFAs.Formularios
             snapshot.EstadosFinales = finales;
 
             grafoAutomata.Automata = snapshot;
+
+            Size tamanoNecesario = grafoAutomata.CalcularTamanoNecesario();
+            Panel contenedor = (Panel)grafoAutomata.Parent;
+            grafoAutomata.Size = new Size(Math.Max(tamanoNecesario.Width, contenedor.Width - 20), Math.Max(tamanoNecesario.Height, contenedor.Height - 20));
         }
 
         private void BtnValidar_Click(object sender, EventArgs e)
