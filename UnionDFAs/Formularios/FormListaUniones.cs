@@ -1,4 +1,6 @@
-﻿using UnionDFAs.Controles;
+﻿// Esta pantalla muestra todas las uniones que se han generado hasta el momento, cada una en
+// su propia tarjeta, con la opcion de verla en detalle o eliminarla.
+using UnionDFAs.Controles;
 using UnionDFAs.Logica;
 using UnionDFAs.Modelo;
 

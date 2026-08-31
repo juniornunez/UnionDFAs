@@ -1,4 +1,6 @@
-﻿using UnionDFAs.Estructuras;
+﻿// Esta clase representa un automata completo: su nombre, sus estados, su alfabeto, su estado inicial,
+// sus estados finales y sus transiciones. Todo guardado en nuestra lista enlazada propia.
+using UnionDFAs.Estructuras;
 
 namespace UnionDFAs.Modelo
 {

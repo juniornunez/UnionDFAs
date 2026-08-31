@@ -1,4 +1,6 @@
-﻿namespace UnionDFAs.Modelo
+﻿// Esta clase representa un par de estados combinados, uno del automata 1 y uno del automata 2,
+// que se usa para armar los estados nuevos cuando se hace la union de dos automatas.
+namespace UnionDFAs.Modelo
 {
     public class ParEstados
     {

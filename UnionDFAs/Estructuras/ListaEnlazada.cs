@@ -1,4 +1,7 @@
-﻿namespace UnionDFAs.Estructuras
+﻿// Esta es nuestra lista enlazada hecha desde cero, sin usar List ni ninguna coleccion nativa de C#.
+// Aqui guardamos los estados, el alfabeto, los estados finales y las transiciones del automata.
+// Tiene metodos para agregar, buscar, obtener por posicion y eliminar, todo recorriendo la lista a mano.
+namespace UnionDFAs.Estructuras
 {
     public class Nodo<T>
     {

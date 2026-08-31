@@ -1,4 +1,6 @@
-﻿using UnionDFAs.Controles;
+﻿// Esta pantalla muestra el resultado de una union: la lista de componentes, el grafo del
+// automata resultante y la tabla completa de transiciones.
+using UnionDFAs.Controles;
 using UnionDFAs.Modelo;
 
 namespace UnionDFAs.Formularios

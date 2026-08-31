@@ -1,4 +1,6 @@
-﻿using UnionDFAs.Estructuras;
+﻿// Esta clase convierte un automata de nuestro formato con listas enlazadas hacia el formato de
+// arreglos que se usa para guardar en archivo, y tambien hace la conversion al reves.
+using UnionDFAs.Estructuras;
 
 namespace UnionDFAs.Modelo
 {

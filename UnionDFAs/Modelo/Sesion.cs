@@ -1,4 +1,6 @@
-﻿using UnionDFAs.Estructuras;
+﻿// Esta clase guarda en memoria todos los automatas y todas las uniones que el usuario ha creado
+// mientras el programa esta corriendo, para que las demas pantallas puedan accederlos.
+using UnionDFAs.Estructuras;
 
 namespace UnionDFAs.Modelo
 {

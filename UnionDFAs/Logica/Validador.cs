@@ -1,4 +1,7 @@
-﻿using UnionDFAs.Estructuras;
+﻿// Esta clase revisa que un automata este bien definido: que no tenga estados ni simbolos repetidos,
+// que el estado inicial y los finales existan, y que la funcion de transicion este completa
+// y no tenga no determinismo. Si encuentra algo mal, lo reporta con un mensaje especifico.
+using UnionDFAs.Estructuras;
 using UnionDFAs.Modelo;
 
 namespace UnionDFAs.Logica

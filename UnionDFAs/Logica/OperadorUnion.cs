@@ -1,4 +1,7 @@
-﻿using UnionDFAs.Estructuras;
+﻿// Esta clase hace la union entre dos automatas: combina los estados en pares, calcula las
+// transiciones nuevas, y marca como final cualquier par donde alguno de los dos estados originales
+// sea final.
+using UnionDFAs.Estructuras;
 using UnionDFAs.Modelo;
 
 namespace UnionDFAs.Logica

@@ -1,4 +1,6 @@
-﻿using UnionDFAs.Modelo;
+﻿// Esta clase recorre una cadena de simbolos dentro de un automata, paso por paso, siguiendo las
+// transiciones, y al final dice si la cadena fue aceptada o rechazada segun donde termino.
+using UnionDFAs.Modelo;
 
 namespace UnionDFAs.Logica
 {

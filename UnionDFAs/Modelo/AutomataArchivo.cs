@@ -1,4 +1,6 @@
-﻿namespace UnionDFAs.Modelo
+﻿// Estas clases son solo para poder guardar y leer los automatas y las uniones en un archivo,
+// convirtiendo nuestras listas enlazadas en arreglos normales que si se pueden guardar en formato JSON.
+namespace UnionDFAs.Modelo
 {
     public class TransicionArchivo
     {

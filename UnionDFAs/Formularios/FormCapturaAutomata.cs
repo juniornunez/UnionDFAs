@@ -1,4 +1,6 @@
-﻿using UnionDFAs.Controles;
+﻿// Esta pantalla es donde el usuario crea un automata nuevo: agrega estados, agrega el alfabeto,
+// genera la tabla de transiciones, elige el inicial y los finales, valida el automata y lo guarda.
+using UnionDFAs.Controles;
 using UnionDFAs.Estructuras;
 using UnionDFAs.Logica;
 using UnionDFAs.Modelo;

@@ -1,4 +1,6 @@
-﻿using UnionDFAs.Estructuras;
+﻿// Esta clase guarda el resultado de validar un automata: si quedo valido o no, y la lista de errores
+// que se encontraron, para poder mostrarlos despues en pantalla.
+using UnionDFAs.Estructuras;
 
 namespace UnionDFAs.Modelo
 {

@@ -1,4 +1,6 @@
-﻿using UnionDFAs.Estructuras;
+﻿// Esta clase guarda el resultado de probar una cadena en un automata: si fue aceptada o no,
+// si la cadena era valida, y la secuencia de estados por los que paso, para mostrar la trazabilidad.
+using UnionDFAs.Estructuras;
 
 namespace UnionDFAs.Modelo
 {

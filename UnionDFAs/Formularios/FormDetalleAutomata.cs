@@ -1,4 +1,6 @@
-﻿using UnionDFAs.Controles;
+﻿// Esta pantalla muestra en modo de solo lectura toda la informacion de un automata ya guardado:
+// sus componentes, su grafo y su tabla de transiciones, sin dejar editarlo.
+using UnionDFAs.Controles;
 using UnionDFAs.Estructuras;
 using UnionDFAs.Modelo;
 

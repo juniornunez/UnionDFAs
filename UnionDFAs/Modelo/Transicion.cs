@@ -1,4 +1,5 @@
-﻿namespace UnionDFAs.Modelo
+﻿// Esta clase representa una sola transicion del automata: de donde sale, con que simbolo, y a donde llega.
+namespace UnionDFAs.Modelo
 {
     public class Transicion
     {

@@ -1,4 +1,6 @@
-﻿namespace UnionDFAs.Controles
+﻿// Este es un ComboBox personalizado donde controlamos nosotros mismos como se dibuja el texto,
+// para que quede bien centrado tanto en la parte cerrada como en la lista desplegable.
+namespace UnionDFAs.Controles
 {
     public class ComboRedondeado : ComboBox
     {

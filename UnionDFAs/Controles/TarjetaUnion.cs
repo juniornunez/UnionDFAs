@@ -1,4 +1,6 @@
-﻿using System.Drawing.Drawing2D;
+﻿// Esta es la tarjeta visual que representa una union guardada, parecida a la tarjeta de
+// automata pero mostrando de que dos automatas viene esa union.
+using System.Drawing.Drawing2D;
 using UnionDFAs.Modelo;
 
 namespace UnionDFAs.Controles

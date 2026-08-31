@@ -1,4 +1,6 @@
-﻿using System.Text.Json;
+﻿// Esta clase se encarga de guardar y cargar los automatas y las uniones en un archivo dentro
+// de la carpeta del proyecto, para que no se pierdan cuando se cierra el programa.
+using System.Text.Json;
 using UnionDFAs.Estructuras;
 using UnionDFAs.Modelo;
 

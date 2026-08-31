@@ -1,4 +1,7 @@
-﻿using System.Drawing.Drawing2D;
+﻿// Esta es la tarjeta visual que representa un automata guardado en la pantalla principal,
+// mostrando su nombre y su informacion basica, con un boton de eliminar y la opcion de
+// hacer clic para ver el detalle completo.
+using System.Drawing.Drawing2D;
 using UnionDFAs.Modelo;
 
 namespace UnionDFAs.Controles

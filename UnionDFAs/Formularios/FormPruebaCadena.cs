@@ -1,4 +1,7 @@
-﻿using UnionDFAs.Controles;
+﻿// Esta pantalla deja escribir una cadena y probarla en una union ya guardada, mostrando la
+// trazabilidad paso a paso, la notacion formal delta gorrito, y el veredicto de si la cadena
+// fue aceptada en el automata 1, en el automata 2 y en la union.
+using UnionDFAs.Controles;
 using UnionDFAs.Estructuras;
 using UnionDFAs.Logica;
 using UnionDFAs.Modelo;

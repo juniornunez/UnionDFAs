@@ -1,4 +1,6 @@
-﻿using System.Drawing.Drawing2D;
+﻿// Este es un control personalizado que dibujamos nosotros mismos, usado como tarjeta de menu
+// en la pantalla principal, con un titulo, un subtitulo y un efecto de color cuando el mouse pasa encima.
+using System.Drawing.Drawing2D;
 
 namespace UnionDFAs.Controles
 {

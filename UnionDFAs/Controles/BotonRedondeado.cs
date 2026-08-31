@@ -1,4 +1,6 @@
-﻿using System.Drawing.Drawing2D;
+﻿// Este es un boton dibujado por nosotros con las esquinas bien redondeadas, para que se vea
+// mas moderno que un boton normal de Windows Forms.
+using System.Drawing.Drawing2D;
 
 namespace UnionDFAs.Controles
 {

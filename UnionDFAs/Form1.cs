@@ -1,3 +1,6 @@
+// Esta es la pantalla principal del programa, donde salen los botones para crear un automata
+// nuevo, unir automatas, ver las uniones generadas y probar cadenas. Tambien muestra las
+// tarjetas de todos los automatas que ya se han creado.
 using UnionDFAs.Controles;
 using UnionDFAs.Formularios;
 using UnionDFAs.Logica;

@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿// Esta clase arma el texto de la notacion formal delta gorrito, mostrando paso por paso como se
+// va calculando el estado siguiente para cada prefijo de la cadena que se esta probando.
+using System.Text;
 using UnionDFAs.Estructuras;
 using UnionDFAs.Modelo;
 

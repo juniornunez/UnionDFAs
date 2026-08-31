@@ -1,4 +1,7 @@
-﻿using System.ComponentModel;
+﻿// Este control dibuja el automata como un grafo: cada estado es un cuadro, y las transiciones
+// son lineas con flechas entre los cuadros, marcando cual es el estado inicial y cuales son finales.
+// Todo se dibuja a mano con Graphics, sin usar ninguna libreria externa de graficos.
+using System.ComponentModel;
 using UnionDFAs.Modelo;
 
 namespace UnionDFAs.Controles

@@ -1,4 +1,6 @@
-﻿using UnionDFAs.Controles;
+﻿// Esta pantalla deja elegir dos automatas ya guardados para unirlos, revisa que tengan el mismo
+// alfabeto, y si todo esta bien, genera el automata union y lo guarda en la sesion.
+using UnionDFAs.Controles;
 using UnionDFAs.Logica;
 using UnionDFAs.Modelo;
 
