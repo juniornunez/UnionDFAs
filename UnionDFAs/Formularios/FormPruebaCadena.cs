@@ -1,6 +1,7 @@
 ﻿// Esta pantalla deja escribir una cadena y probarla en una union ya guardada, mostrando la
-// trazabilidad paso a paso, la notacion formal delta gorrito, y el veredicto de si la cadena
-// fue aceptada en el automata 1, en el automata 2 y en la union.
+// trazabilidad paso a paso, la notacion formal delta gorrito para los 2 automatas originales
+// y para la union, y el veredicto de si la cadena fue aceptada en cada uno de los 3.
+
 using UnionDFAs.Controles;
 using UnionDFAs.Estructuras;
 using UnionDFAs.Logica;
@@ -13,7 +14,11 @@ namespace UnionDFAs.Formularios
         private ComboBox cmbUnion;
         private TextBox txtCadena;
         private FlowLayoutPanel panelTrazabilidad;
-        private TextBox txtNotacionFormal;
+        private TextBox txtNotacionAutomata1;
+        private TextBox txtNotacionAutomata2;
+        private TextBox txtNotacionUnion;
+        private Label lblTituloNotacion1;
+        private Label lblTituloNotacion2;
         private Label lblVeredicto1;
         private Label lblVeredicto2;
         private Label lblVeredictoUnion;
@@ -32,7 +37,8 @@ namespace UnionDFAs.Formularios
             Text = "Prueba de Cadenas";
             BackColor = Color.FromArgb(250, 250, 252);
             StartPosition = FormStartPosition.CenterScreen;
-            Size = new Size(950, 950);
+            Size = new Size(1000, 900);
+            AutoScroll = true;
             Font = new Font("Segoe UI", 9F);
             ForeColor = Color.FromArgb(40, 42, 48);
 
@@ -95,56 +101,82 @@ namespace UnionDFAs.Formularios
 
             GroupBox grupoTraza = new GroupBox();
             grupoTraza.Location = new Point(30, 220);
-            grupoTraza.Size = new Size(870, 130);
+            grupoTraza.Size = new Size(900, 110);
             grupoTraza.ForeColor = Color.FromArgb(90, 92, 100);
             Controls.Add(grupoTraza);
 
             panelTrazabilidad = new FlowLayoutPanel();
-            panelTrazabilidad.Location = new Point(10, 20);
-            panelTrazabilidad.Size = new Size(850, 100);
+            panelTrazabilidad.Location = new Point(10, 15);
+            panelTrazabilidad.Size = new Size(880, 85);
             panelTrazabilidad.AutoScroll = true;
             panelTrazabilidad.BackColor = Color.White;
             grupoTraza.Controls.Add(panelTrazabilidad);
 
-            Label lblNotacionFormal = new Label();
-            lblNotacionFormal.Text = "Notacion Formal (Delta Gorrito)";
-            lblNotacionFormal.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            lblNotacionFormal.AutoSize = true;
-            lblNotacionFormal.Location = new Point(30, 365);
-            Controls.Add(lblNotacionFormal);
+            Label lblNotacionUnionTitulo = new Label();
+            lblNotacionUnionTitulo.Text = "Notacion Formal - Automata Union";
+            lblNotacionUnionTitulo.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            lblNotacionUnionTitulo.AutoSize = true;
+            lblNotacionUnionTitulo.Location = new Point(30, 345);
+            Controls.Add(lblNotacionUnionTitulo);
 
-            txtNotacionFormal = new TextBox();
-            txtNotacionFormal.Location = new Point(30, 400);
-            txtNotacionFormal.Size = new Size(870, 270);
-            txtNotacionFormal.Multiline = true;
-            txtNotacionFormal.ReadOnly = true;
-            txtNotacionFormal.ScrollBars = ScrollBars.Vertical;
-            txtNotacionFormal.Font = new Font("Consolas", 10F);
-            txtNotacionFormal.BackColor = Color.White;
-            txtNotacionFormal.BorderStyle = BorderStyle.FixedSingle;
-            txtNotacionFormal.ForeColor = Color.FromArgb(40, 42, 48);
-            Controls.Add(txtNotacionFormal);
+            txtNotacionUnion = CrearCajaNotacion(30, 375, 900, 150);
+            Controls.Add(txtNotacionUnion);
+
+            lblTituloNotacion1 = new Label();
+            lblTituloNotacion1.Text = "Notacion Formal - Automata 1";
+            lblTituloNotacion1.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            lblTituloNotacion1.AutoSize = true;
+            lblTituloNotacion1.Location = new Point(30, 535);
+            Controls.Add(lblTituloNotacion1);
+
+            txtNotacionAutomata1 = CrearCajaNotacion(30, 565, 900, 140);
+            Controls.Add(txtNotacionAutomata1);
+
+            lblTituloNotacion2 = new Label();
+            lblTituloNotacion2.Text = "Notacion Formal - Automata 2";
+            lblTituloNotacion2.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            lblTituloNotacion2.AutoSize = true;
+            lblTituloNotacion2.Location = new Point(30, 715);
+            Controls.Add(lblTituloNotacion2);
+
+            txtNotacionAutomata2 = CrearCajaNotacion(30, 745, 900, 140);
+            Controls.Add(txtNotacionAutomata2);
 
             Label etiquetaVeredicto = new Label();
             etiquetaVeredicto.Text = "Veredicto de Aceptacion";
             etiquetaVeredicto.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             etiquetaVeredicto.AutoSize = true;
-            etiquetaVeredicto.Location = new Point(30, 685);
+            etiquetaVeredicto.Location = new Point(30, 900);
             Controls.Add(etiquetaVeredicto);
 
-            grupoVeredicto1 = CrearTarjetaVeredicto("Automata 1", 30, 725, out lblVeredicto1);
+            grupoVeredicto1 = CrearTarjetaVeredicto("Automata 1", 30, 940, out lblVeredicto1);
             Controls.Add(grupoVeredicto1);
 
-            grupoVeredicto2 = CrearTarjetaVeredicto("Automata 2", 320, 725, out lblVeredicto2);
+            grupoVeredicto2 = CrearTarjetaVeredicto("Automata 2", 320, 940, out lblVeredicto2);
             Controls.Add(grupoVeredicto2);
 
-            GroupBox grupoVeredictoUnion = CrearTarjetaVeredicto("Automata Union", 610, 725, out lblVeredictoUnion);
+            GroupBox grupoVeredictoUnion = CrearTarjetaVeredicto("Automata Union", 610, 940, out lblVeredictoUnion);
             Controls.Add(grupoVeredictoUnion);
 
             if (cmbUnion.Items.Count > 0)
             {
                 cmbUnion.SelectedIndex = 0;
             }
+        }
+
+        private TextBox CrearCajaNotacion(int x, int y, int ancho, int alto)
+        {
+            TextBox caja = new TextBox();
+            caja.Location = new Point(x, y);
+            caja.Size = new Size(ancho, alto);
+            caja.Multiline = true;
+            caja.ReadOnly = true;
+            caja.ScrollBars = ScrollBars.Vertical;
+            caja.Font = new Font("Consolas", 10F);
+            caja.BackColor = Color.White;
+            caja.BorderStyle = BorderStyle.FixedSingle;
+            caja.ForeColor = Color.FromArgb(40, 42, 48);
+            return caja;
         }
 
         private GroupBox CrearTarjetaVeredicto(string titulo, int x, int y, out Label etiquetaResultado)
@@ -176,6 +208,8 @@ namespace UnionDFAs.Formularios
             unionSeleccionada = Sesion.Uniones.Obtener(cmbUnion.SelectedIndex);
             grupoVeredicto1.Text = unionSeleccionada.NombreOrigen1;
             grupoVeredicto2.Text = unionSeleccionada.NombreOrigen2;
+            lblTituloNotacion1.Text = "Notacion Formal - " + unionSeleccionada.NombreOrigen1;
+            lblTituloNotacion2.Text = "Notacion Formal - " + unionSeleccionada.NombreOrigen2;
 
             lblVeredicto1.Text = "Sin evaluar";
             lblVeredicto1.ForeColor = Color.FromArgb(130, 133, 145);
@@ -184,7 +218,9 @@ namespace UnionDFAs.Formularios
             lblVeredictoUnion.Text = "Sin evaluar";
             lblVeredictoUnion.ForeColor = Color.FromArgb(130, 133, 145);
             panelTrazabilidad.Controls.Clear();
-            txtNotacionFormal.Text = "";
+            txtNotacionUnion.Text = "";
+            txtNotacionAutomata1.Text = "";
+            txtNotacionAutomata2.Text = "";
             lblMensajeError.Text = "";
         }
 
@@ -219,7 +255,9 @@ namespace UnionDFAs.Formularios
             string cadena = txtCadena.Text.Trim();
             lblMensajeError.Text = "";
             panelTrazabilidad.Controls.Clear();
-            txtNotacionFormal.Text = "";
+            txtNotacionUnion.Text = "";
+            txtNotacionAutomata1.Text = "";
+            txtNotacionAutomata2.Text = "";
 
             EvaluadorCadenas evaluador = new EvaluadorCadenas();
 
@@ -239,10 +277,28 @@ namespace UnionDFAs.Formularios
 
             MostrarTrazabilidad(resultadoUnion.SecuenciaEstados, cadena);
 
-            txtNotacionFormal.Text = GeneradorNotacionFormal.Generar(unionSeleccionada.AutomataResultante.EstadoInicial, cadena, resultadoUnion.SecuenciaEstados);
+            txtNotacionUnion.Text = GeneradorNotacionFormal.Generar(unionSeleccionada.AutomataResultante.EstadoInicial, cadena, resultadoUnion.SecuenciaEstados);
 
             ResultadoEvaluacion resultado1 = evaluador.Evaluar(automataOrigen1, cadena);
             ResultadoEvaluacion resultado2 = evaluador.Evaluar(automataOrigen2, cadena);
+
+            if (resultado1.CadenaValida)
+            {
+                txtNotacionAutomata1.Text = GeneradorNotacionFormal.Generar(automataOrigen1.EstadoInicial, cadena, resultado1.SecuenciaEstados);
+            }
+            else
+            {
+                txtNotacionAutomata1.Text = "No se pudo calcular: " + resultado1.MensajeError;
+            }
+
+            if (resultado2.CadenaValida)
+            {
+                txtNotacionAutomata2.Text = GeneradorNotacionFormal.Generar(automataOrigen2.EstadoInicial, cadena, resultado2.SecuenciaEstados);
+            }
+            else
+            {
+                txtNotacionAutomata2.Text = "No se pudo calcular: " + resultado2.MensajeError;
+            }
 
             AplicarVeredicto(lblVeredicto1, resultado1);
             AplicarVeredicto(lblVeredicto2, resultado2);
