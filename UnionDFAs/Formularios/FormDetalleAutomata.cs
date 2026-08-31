@@ -21,9 +21,10 @@ namespace UnionDFAs.Formularios
             Text = "Detalle del Automata: " + automata.Nombre;
             BackColor = Color.FromArgb(250, 250, 252);
             StartPosition = FormStartPosition.CenterScreen;
-            Size = new Size(950, 1050);
+            Size = new Size(950, 850);
             Font = new Font("Segoe UI", 9F);
             ForeColor = Color.FromArgb(40, 42, 48);
+            AutoScroll = true;
 
             Label titulo = new Label();
             titulo.Text = automata.Nombre;
